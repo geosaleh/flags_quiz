@@ -42,6 +42,7 @@ Now its time to execute **FlagsQuiz.py**
 
 ```
 it will show following Output
+
 <img src="FlagsQuiz.PNG">
 
 ## Download
