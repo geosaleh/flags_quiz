@@ -125,19 +125,21 @@ class Ui_MainWindow(object):
         self.nextQuiz()
 
     def country_name(self,raw):
-        return raw.split('/')[1].split('.')[0]
+        return ''.join(x if x.isalpha() else ' ' for x in raw[5:].split('.')[0]).strip()
 
     def nextQuiz(self):
         global i,ans_list
-        if i < len(flags_list):
-            i +=1
-        else:
-            i=0
+        flags_list_range = [x for x in range(0,len(flags_list))]
+        i = random.choice(flags_list_range)
         self.label_2.setPixmap(QtGui.QPixmap(flags_list[i]))
         ans_list = [i]
-        ans_list.append(random.randrange(0,len(flags_list)))
-        ans_list.append(random.randrange(0,len(flags_list)))
-        ans_list.append(random.randrange(0,len(flags_list)))
+        flags_list_range.remove(ans_list[0])
+        ans_list.append(random.choice(flags_list_range))
+        flags_list_range.remove(ans_list[1])
+        ans_list.append(random.choice(flags_list_range))
+        flags_list_range.remove(ans_list[2])
+        ans_list.append(random.choice(flags_list_range))
+    
         random.shuffle(ans_list)
         self.pushButton_5.setText(self.country_name(flags_list[ans_list[0]]))
         self.pushButton_6.setText(self.country_name(flags_list[ans_list[1]]))
@@ -181,7 +183,12 @@ if __name__ == "__main__":
     import glob
 
     global flags_list, countries_list
-    flags_list = glob.glob('data/*.png')
+    flags_list = []
+    flags_list.extend(glob.glob('data\*.svg'))
+    flags_list.extend(glob.glob('data\*.png'))
+    flags_list.extend(glob.glob('data\*.jpg'))
+    flags_list.extend(glob.glob('data\*.jpge'))
+    
 
     
     app = QtWidgets.QApplication(sys.argv)
